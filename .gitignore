@@ -12,4 +12,6 @@ dist/
 .vscode/
 .superpowers/
 data/
+docs/
+ppt/
 *.db
