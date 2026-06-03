@@ -1,0 +1,62 @@
+[
+  {
+    "name": "分类名不匹配",
+    "input": "删掉昨天那笔午饭",
+    "expected": {
+      "target_type": "expense",
+      "match_criteria": {"category": "餐饮", "time": "昨天"},
+      "aliases": ["午饭", "午餐", "吃饭"],
+      "confirm": false,
+      "delete_all": false
+    },
+    "check": "LLM输出'餐饮'而非'午饭'，aliases供模糊匹配"
+  },
+  {
+    "name": "收入类删除",
+    "input": "删掉今天红包记录",
+    "expected": {
+      "target_type": "income",
+      "match_criteria": {"category": "红包", "time": "今天"},
+      "aliases": ["红包"],
+      "confirm": false,
+      "delete_all": false
+    },
+    "check": "红包→income类"
+  },
+  {
+    "name": "日程取消",
+    "input": "取消明天下午的会议",
+    "expected": {
+      "target_type": "schedule",
+      "match_criteria": {"category": "会议", "time": "明天"},
+      "aliases": ["开会", "会议", "讨论"],
+      "confirm": false,
+      "delete_all": false
+    },
+    "check": "取消→delete意图，target_type=schedule"
+  },
+  {
+    "name": "模糊删除需确认",
+    "input": "把打车那条删了",
+    "expected": {
+      "target_type": "expense",
+      "match_criteria": {"category": "交通"},
+      "aliases": ["打车", "滴滴", "出租车"],
+      "confirm": true,
+      "delete_all": false
+    },
+    "check": "无时间约束→confirm=true"
+  },
+  {
+    "name": "批量删除",
+    "input": "删除所有退款记录",
+    "expected": {
+      "target_type": "income",
+      "match_criteria": {"category": "退款"},
+      "aliases": ["退款", "退货退款"],
+      "confirm": true,
+      "delete_all": true
+    },
+    "check": "所有→delete_all=true + confirm=true"
+  }
+]

@@ -1,0 +1,7 @@
+# AI Native Transaction Management - Python Dependencies
+# Install: pip install -r requirements.txt
+
+Flask>=3.1
+python-dotenv>=1.0
+requests>=2.32
+pytest>=9.0

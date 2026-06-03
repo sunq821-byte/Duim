@@ -1,0 +1,46 @@
+[
+  {
+    "name": "只改金额",
+    "input": "把昨天打车20改成25",
+    "expected": {
+      "target_type": "expense",
+      "match_criteria": {"category": "交通", "time": "昨天"},
+      "aliases": ["打车", "滴滴", "出租车"],
+      "updates": {"amount": 25}
+    },
+    "check": "只更新amount字段"
+  },
+  {
+    "name": "修改日程时间",
+    "input": "把明天会议改到下午4点",
+    "expected": {
+      "target_type": "schedule",
+      "match_criteria": {"category": "会议", "time": "明天"},
+      "aliases": ["开会", "会议"],
+      "updates": {"time": "明天 16:00"}
+    },
+    "check": "修改日程的时间"
+  },
+  {
+    "name": "改备注",
+    "input": "把前天吃饭那条改成火锅",
+    "expected": {
+      "target_type": "expense",
+      "match_criteria": {"category": "餐饮", "time": "前天"},
+      "aliases": ["吃饭", "聚餐", "晚饭"],
+      "updates": {"note": "火锅"}
+    },
+    "check": "更新note字段"
+  },
+  {
+    "name": "改分类和金额",
+    "input": "把今天午饭50改成请客吃饭80",
+    "expected": {
+      "target_type": "expense",
+      "match_criteria": {"category": "餐饮", "time": "今天"},
+      "aliases": ["午饭", "午餐"],
+      "updates": {"amount": 80, "note": "请客吃饭"}
+    },
+    "check": "同时更新多个字段"
+  }
+]

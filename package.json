@@ -1,0 +1,13 @@
+{
+  "name": "ai-native",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Native 自然语言事务管理系统",
+  "scripts": {
+    "dev": "start /B python backend/server.py && cd frontend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "python backend/server.py",
+    "build": "cd frontend && npm run build",
+    "test": "cd backend && python -m pytest tests/ -v"
+  }
+}

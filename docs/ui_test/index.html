@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>钦会 Dium — AI Native 事务管理</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ======= 遮罩层 ======= -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ======= 左侧抽屉菜单 ======= -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-avatar">陶</div>
+            <div class="sidebar-user-info">
+                <span class="sidebar-user-name">陶俊辉</span>
+                <span class="sidebar-user-sub">AI Native Explorer</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-nav-item active" data-nav="home">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                    </svg>
+                </span> 首页
+            </button>
+            <button class="sidebar-nav-item" data-nav="timeline">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </span> 时光轴
+                <span class="nav-badge">12</span>
+            </button>
+            <button class="sidebar-nav-item" data-nav="stats">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                </span> 统计分析
+            </button>
+            <button class="sidebar-nav-item" data-nav="labels">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>
+                    </svg>
+                </span> 标签管理
+            </button>
+            <button class="sidebar-nav-item" data-nav="settings">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+                    </svg>
+                </span> 设置
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <p class="sidebar-footer-text">钦会 Dium v0.1.0 · AI Native</p>
+        </div>
+    </aside>
+
+    <!-- ======= 右侧历史时光轴 ======= -->
+    <aside class="timeline" id="timeline">
+        <div class="timeline-header">
+            <h2 class="timeline-title">时光轴</h2>
+            <button class="timeline-close" id="timelineClose">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="timeline-list" id="timelineList">
+            <!-- 今天 -->
+            <div class="timeline-group-label">今天 · 6月1日</div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot expense"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">18:45</span>
+                        <span class="timeline-item-tag tag-expense">账目</span>
+                    </div>
+                    <div class="timeline-item-desc">餐饮支出 · 火锅聚餐</div>
+                </div>
+                <div class="timeline-item-amount out">¥35</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot schedule"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">15:00</span>
+                        <span class="timeline-item-tag tag-schedule">日程</span>
+                    </div>
+                    <div class="timeline-item-desc">部门周会</div>
+                </div>
+                <div class="timeline-item-amount" style="color:var(--text-muted);font-weight:400;"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot expense"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">12:30</span>
+                        <span class="timeline-item-tag tag-expense">账目</span>
+                    </div>
+                    <div class="timeline-item-desc">餐饮支出 · 午餐</div>
+                </div>
+                <div class="timeline-item-amount out">¥25</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot reminder"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">09:00</span>
+                        <span class="timeline-item-tag tag-reminder">提醒</span>
+                    </div>
+                    <div class="timeline-item-desc">提交项目申请书</div>
+                </div>
+            </div>
+
+            <!-- 昨天 -->
+            <div class="timeline-group-label">昨天 · 5月31日</div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot expense"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">20:30</span>
+                        <span class="timeline-item-tag tag-expense">账目</span>
+                    </div>
+                    <div class="timeline-item-desc">交通支出 · 滴滴打车</div>
+                </div>
+                <div class="timeline-item-amount out">¥20</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot income"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">10:00</span>
+                        <span class="timeline-item-tag tag-income">收入</span>
+                    </div>
+                    <div class="timeline-item-desc">兼职收入 · 外包项目</div>
+                </div>
+                <div class="timeline-item-amount in">+¥800</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot schedule"></div>
+                <div class="timeline-item-body">
+                    <div class="timeline-item-meta">
+                        <span class="timeline-item-time">08:15</span>
+                        <span class="timeline-item-tag tag-schedule">日程</span>
+                    </div>
+                    <div class="timeline-item-desc">晨跑5公里</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ======= 主容器 ======= -->
+    <div class="app-shell" id="appShell">
+
+        <!-- 顶部导航栏 -->
+        <header class="top-bar">
+            <button class="menu-btn" id="menuBtn">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="top-logo">Dium</div>
+            <button class="avatar-btn" id="avatarBtn"></button>
+        </header>
+
+        <!-- AI 核心感知区 -->
+        <main class="stage" id="stage">
+            <div class="logo-container" id="aiLogo">
+                <div class="stream-ring"></div>
+                <div class="ripple ripple-1"></div>
+                <div class="ripple ripple-2"></div>
+                <div class="logo-main">
+                    <svg class="logo-icon" id="logoIcon" viewBox="0 0 100 100">
+                        <g transform="translate(50, 50)">
+                            <path d="M 0,-34 C 10,-34 19,-24 19,-11 C 19,-1 13,7 0,7 C -5,7 -10,4 -12,-1 C -10,-14 -5,-34 0,-34 Z" transform="rotate(0)" />
+                            <path d="M 0,-34 C 10,-34 19,-24 19,-11 C 19,-1 13,7 0,7 C -5,7 -10,4 -12,-1 C -10,-14 -5,-34 0,-34 Z" transform="rotate(60)" />
+                            <path d="M 0,-34 C 10,-34 19,-24 19,-11 C 19,-1 13,7 0,7 C -5,7 -10,4 -12,-1 C -10,-14 -5,-34 0,-34 Z" transform="rotate(120)" />
+                            <path d="M 0,-34 C 10,-34 19,-24 19,-11 C 19,-1 13,7 0,7 C -5,7 -10,4 -12,-1 C -10,-14 -5,-34 0,-34 Z" transform="rotate(180)" />
+                            <path d="M 0,-34 C 10,-34 19,-24 19,-11 C 19,-1 13,7 0,7 C -5,7 -10,4 -12,-1 C -10,-14 -5,-34 0,-34 Z" transform="rotate(240)" />
+                            <path d="M 0,-34 C 10,-34 19,-24 19,-11 C 19,-1 13,7 0,7 C -5,7 -10,4 -12,-1 C -10,-14 -5,-34 0,-34 Z" transform="rotate(300)" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部输入栏 -->
+        <footer class="bottom-bar">
+            <div class="input-box">
+                <input type="text" placeholder="键入事务..." id="keyboardInput" autocomplete="off">
+                <button class="send-btn" id="sendBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ======= 底部设置面板 ======= -->
+    <div class="settings-sheet" id="settingsSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">设置</div>
+        <div class="sheet-item">
+            <div class="sheet-item-left">
+                <svg class="sheet-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <span>深色模式</span>
+            </div>
+            <button class="sheet-toggle" id="darkModeToggle"></button>
+        </div>
+        <div class="sheet-item" data-sheet-action="voice">
+            <div class="sheet-item-left">
+                <svg class="sheet-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                <span>语音与交互</span>
+            </div>
+            <span class="sheet-item-arrow">›</span>
+        </div>
+        <div class="sheet-item" data-sheet-action="data">
+            <div class="sheet-item-left">
+                <svg class="sheet-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                <span>数据管理</span>
+            </div>
+            <span class="sheet-item-arrow">›</span>
+        </div>
+        <div class="sheet-item" data-sheet-action="notifications">
+            <div class="sheet-item-left">
+                <svg class="sheet-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                <span>通知</span>
+            </div>
+            <span class="sheet-item-arrow">›</span>
+        </div>
+        <div class="sheet-item" data-sheet-action="about">
+            <div class="sheet-item-left">
+                <svg class="sheet-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>关于</span>
+            </div>
+            <span class="sheet-item-arrow">›</span>
+        </div>
+    </div>
+
+    <!-- ======= Toast 容器 ======= -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基于大语言模型的AI Native事务管理系统 · 科研项目答辩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN SYSTEM — AI Native 事务管理系统 答辩PPT
+   全浅色 · 统一白科技风
+   ============================================================ */
+
+:root {
+  /* ── 浅色页 ── */
+  --bg-light: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-helper: #9CA3AF;
+  --border: #E5E7EB;
+  --border-strong: #D1D5DB;
+
+  /* ── 深色页 ── */
+  --bg-dark: #0F172A;
+  --bg-dark-card: #1E293B;
+  --dark-card-border: rgba(255,255,255,0.08);
+  --text-dark-primary: #F1F5F9;
+  --text-dark-secondary: #94A3B8;
+  --text-dark-helper: #64748B;
+
+  /* ── AI 品牌色 ── */
+  --ai-primary: #4F46E5;
+  --ai-primary-rgb: 79,70,229;
+  --ai-light: #6C63FF;
+  --ai-light-rgb: 108,99,255;
+  --ai-purple: #8B5CF6;
+  --ai-purple-rgb: 139,92,246;
+  --ai-gradient: linear-gradient(135deg, #6C63FF, #8B5CF6);
+  --ai-glow: radial-gradient(circle, rgba(108,99,255,0.18) 0%, rgba(139,92,246,0.06) 50%, transparent 70%);
+
+  /* ── 功能色 ── */
+  --success: #10B981;
+  --success-bg: #ECFDF5;
+  --warn: #F59E0B;
+  --warn-bg: #FFFBEB;
+  --error: #EF4444;
+
+  /* ── 卡片 ── */
+  --radius-sm: 8px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.08), 0 16px 40px rgba(0,0,0,0.06);
+
+  /* ── 排版 ── */
+  --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  --font-heavy: 'Noto Sans SC', 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* ── 间距 ── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 48px;
+  --sp-10: 64px;
+  --sp-11: 80px;
+  --sp-12: 96px;
+
+  /* ── 动画 ── */
+  --ease-out: cubic-bezier(0,0,0.2,1);
+  --ease-in-out: cubic-bezier(0.4,0,0.2,1);
+  --dur-fast: 0.15s;
+  --dur-normal: 0.3s;
+  --dur-slow: 0.6s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background: var(--bg-light); color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+
+/* ── Deck 容器 ── */
+#deck {
+  position: fixed; inset: 0;
+  width: 900vw; height: 100vh;
+  display: flex; flex-wrap: nowrap;
+  transition: transform 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 10; will-change: transform;
+}
+
+/* ── 每页Slide ── */
+.slide {
+  width: 100vw; height: 100vh; flex: 0 0 100vw;
+  position: relative; padding: 5vh 5vw 6vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-light); color: var(--text-primary);
+}
+
+/* ── 深色Slide ── */
+.slide.dark {
+  background: var(--bg-dark); color: var(--text-dark-primary);
+}
+.slide.dark .text-secondary { color: var(--text-dark-secondary); }
+.slide.dark .text-helper { color: var(--text-dark-helper); }
+.slide.dark .card {
+  background: var(--bg-dark-card);
+  border-color: var(--dark-card-border);
+  color: var(--text-dark-primary);
+}
+
+/* ── Chrome（每页顶部导航条） ── */
+.chrome {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em;
+  text-transform: uppercase; opacity: 0.6; margin-bottom: var(--sp-7); flex-shrink: 0;
+  font-weight: 500;
+}
+.slide.dark .chrome { color: var(--text-dark-secondary); }
+
+/* ── 页脚 ── */
+.foot {
+  margin-top: auto; flex-shrink: 0;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; opacity: 0.45;
+  padding-top: 2vh; border-top: 1px solid var(--border);
+}
+.slide.dark .foot { border-color: rgba(255,255,255,0.1); }
+
+/* ── 排版层级 ── */
+.kicker {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.55; margin-bottom: 1.6vh;
+  display: inline-flex; align-items: center; gap: 0.6em; font-weight: 500;
+}
+.kicker::before { content: ""; width: 20px; height: 1px; background: currentColor; opacity: 0.5; }
+.slide.dark .kicker { color: var(--ai-purple); opacity: 0.85; }
+
+.h1 { font-family: var(--font-heavy); font-weight: 900; font-size: 3.6vw; line-height: 1.08; letter-spacing: -0.025em; }
+.h2 { font-family: var(--font-heavy); font-weight: 700; font-size: 2.2vw; line-height: 1.15; letter-spacing: -0.015em; }
+.h3 { font-family: var(--font-heavy); font-weight: 700; font-size: 1.4vw; line-height: 1.25; letter-spacing: -0.01em; }
+.lead { font-size: 1.15vw; line-height: 1.5; opacity: 0.75; font-weight: 400; }
+.body { font-size: max(16px, 0.95vw); line-height: 1.55; opacity: 0.8; }
+.body-sm { font-size: max(14px, 0.82vw); line-height: 1.5; opacity: 0.65; }
+.mono-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.15em;
+  text-transform: uppercase; font-weight: 600; }
+.mono-label.accent { color: var(--ai-primary); }
+
+.slide.dark .h1, .slide.dark .h2, .slide.dark .h3 { color: var(--text-dark-primary); }
+
+/* ── 卡片 ── */
+.card {
+  background: var(--bg-card); border-radius: var(--radius);
+  box-shadow: var(--shadow); border: 1px solid var(--border);
+  padding: var(--sp-5) var(--sp-6);
+}
+.card-accent {
+  border-left: 3px solid var(--ai-primary);
+}
+.card-glow {
+  border: 1px solid rgba(108,99,255,0.25);
+  box-shadow: 0 0 20px rgba(108,99,255,0.06);
+}
+.slide.dark .card {
+  background: var(--bg-dark-card);
+  border: 1px solid var(--dark-card-border);
+  box-shadow: none;
+}
+
+/* ── 深色页发光卡片 ── */
+.card-dark-glow {
+  background: rgba(79,70,229,0.08);
+  border: 1px solid rgba(108,99,255,0.25);
+  border-radius: var(--radius);
+  padding: var(--sp-5) var(--sp-6);
+  position: relative;
+}
+
+/* ── 标签/徽章 ── */
+.tag {
+  display: inline-block; font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 10px;
+  border: 1px solid var(--border-strong); border-radius: 4px; font-weight: 600;
+}
+.tag.green { background: var(--success-bg); color: #065F46; border-color: #A7F3D0; }
+.tag.yellow { background: var(--warn-bg); color: #92400E; border-color: #FDE68A; }
+.tag.gray { background: #F3F4F6; color: #6B7280; border-color: #E5E7EB; }
+.tag.accent { background: rgba(79,70,229,0.08); color: var(--ai-primary); border-color: rgba(79,70,229,0.2); }
+
+/* ── 分隔线 ── */
+.divider { width: 100%; height: 1px; background: var(--border); margin: var(--sp-4) 0; }
+.divider-accent { width: 48px; height: 3px; background: var(--ai-primary); border-radius: 2px; }
+.slide.dark .divider { background: rgba(255,255,255,0.08); }
+
+/* ── 布局工具 ── */
+.row { display: flex; align-items: center; gap: var(--sp-6); }
+.col { display: flex; flex-direction: column; gap: var(--sp-4); }
+.fill { flex: 1; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-7) var(--sp-8); align-items: start; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); align-items: start; }
+.grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--sp-7) var(--sp-8); align-items: start; }
+.center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.text-secondary { color: var(--text-secondary); }
+.text-helper { color: var(--text-helper); }
+.accent-text { color: var(--ai-primary); }
+
+/* ── AI 光晕背景 ── */
+.glow-bg {
+  position: absolute; pointer-events: none; z-index: 0;
+  width: 50vw; height: 50vw; max-width: 600px; max-height: 600px;
+  border-radius: 50%;
+  background: var(--ai-glow);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+/* ── 代码框 ── */
+.code-block {
+  background: #1E293B; color: #E2E8F0; border-radius: var(--radius-sm);
+  padding: var(--sp-4) var(--sp-5); font-family: var(--font-mono);
+  font-size: 12px; line-height: 1.6; overflow: hidden; white-space: pre-wrap;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.code-block .key { color: #93C5FD; }
+.code-block .str { color: #A5D6A7; }
+.code-block .num { color: #FFCC80; }
+.code-block .comment { color: #64748B; }
+
+/* ── 浅色代码框 ── */
+.code-block-light {
+  background: #F1F5F9; color: #1E293B; border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4); font-family: var(--font-mono);
+  font-size: 11px; line-height: 1.6; overflow: hidden; white-space: pre-wrap;
+  border: 1px solid var(--border);
+}
+
+/* ── 工程网格背景（局部增强） ── */
+.blueprint-grid {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(79,70,229,0.04) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(90deg, rgba(79,70,229,0.04) 0 1px, transparent 1px 32px);
+}
+
+/* ── 动画 ── */
+[data-anim] { opacity: 1; }
+body.motion-ready [data-anim] { opacity: 0; }
+body.motion-ready [data-anim].visible { opacity: 0; }
+
+/* ── Pipeline 步骤 ── */
+.pipeline {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-4);
+  position: relative;
+}
+.pipeline-step {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  padding-top: var(--sp-4); position: relative;
+}
+.pipeline-step::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--ai-gradient); border-radius: 2px;
+}
+.pipeline-step .step-num {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  color: var(--ai-primary); letter-spacing: 0.08em; text-transform: uppercase;
+}
+.pipeline-step .step-title {
+  font-family: var(--font-heavy); font-weight: 700; font-size: 1vw; line-height: 1.2;
+}
+.pipeline-step .step-desc {
+  font-size: 0.75vw; line-height: 1.45; opacity: 0.65;
+}
+
+/* ── 架构分层 ── */
+.arch-layer {
+  display: flex; align-items: center; gap: var(--sp-5);
+  padding: var(--sp-4) var(--sp-5); border-radius: var(--radius-sm);
+  position: relative;
+}
+.arch-layer .layer-num {
+  font-family: var(--font-mono); font-size: 13px; opacity: 0.4; min-width: 2em; font-weight: 600;
+}
+.arch-layer .layer-icon { font-size: 1.2vw; opacity: 0.7; }
+.arch-layer .layer-label { font-family: var(--font-heavy); font-weight: 700; font-size: 1vw; }
+.arch-layer .layer-tech { font-size: 0.75vw; opacity: 0.5; margin-left: auto; }
+
+/* ── 三栏Demo ── */
+.demo-col {
+  display: flex; flex-direction: column; gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-5); border-radius: var(--radius);
+  background: var(--bg-card); box-shadow: var(--shadow); border: 1px solid var(--border);
+}
+.demo-col-header {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 600; color: var(--ai-primary);
+}
+
+/* ── P5 上部流程行 ── */
+.demo-flow {
+  display: flex; align-items: stretch; gap: 0;
+  flex-shrink: 0;
+}
+.demo-flow-card {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm);
+  background: var(--bg-card); border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  flex: 1; min-width: 0;
+}
+.demo-flow-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 2vw; flex-shrink: 0;
+  font-size: 1.4vw; color: var(--ai-primary); font-weight: 300;
+  user-select: none;
+}
+
+/* ── P5 下部截图区 ── */
+.demo-screenshots {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5);
+  flex: 1; min-height: 0;
+}
+.demo-screenshot-card {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.demo-screenshot-card .shot-label {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 600; color: var(--ai-primary);
+  padding: var(--sp-3) var(--sp-4) 0;
+}
+.demo-screenshot-card .shot-img {
+  flex: 1; overflow: hidden; position: relative;
+  margin: 0 var(--sp-3) var(--sp-3); border-radius: var(--radius-sm);
+}
+.demo-screenshot-card .shot-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  border-radius: var(--radius-sm);
+}
+
+/* ── 时间轴 ── */
+.timeline { display: flex; flex-direction: column; gap: var(--sp-5); position: relative; padding-left: 2vw; }
+.timeline::before {
+  content: ""; position: absolute; left: 0.7vw; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, var(--success) 0%, var(--warn) 45%, var(--border) 65%, var(--border) 100%);
+}
+.timeline-dot {
+  width: 12px; height: 12px; border-radius: 50%; position: absolute; left: calc(-2vw + 0.7vw - 5px); top: 0.4vh;
+  flex-shrink: 0; z-index: 1;
+}
+.timeline-dot.done { background: var(--success); box-shadow: 0 0 0 5px rgba(16,185,129,0.12); }
+.timeline-dot.active { background: var(--warn); box-shadow: 0 0 0 5px rgba(245,158,11,0.12); animation: pulse-dot 2s infinite; }
+.timeline-dot.planned { background: #D1D5DB; }
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 5px rgba(245,158,11,0.12); }
+  50% { box-shadow: 0 0 0 12px rgba(245,158,11,0.04); }
+}
+.timeline-item { position: relative; padding-left: 2.4vw; }
+
+/* ── 成果卡片 ── */
+.deliverable-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--sp-4) var(--sp-5); display: flex; align-items: center; gap: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+}
+.deliverable-card .dl-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4vw; flex-shrink: 0;
+}
+.dl-icon.purple { background: rgba(79,70,229,0.08); color: var(--ai-primary); }
+.dl-icon.green { background: var(--success-bg); color: var(--success); }
+.dl-icon.blue { background: #EFF6FF; color: #3B82F6; }
+
+/* ── 首页大标题 ── */
+.hero-title {
+  font-family: var(--font-heavy); font-weight: 900;
+  font-size: min(6vw, 10vh); line-height: 1.06; letter-spacing: -0.025em;
+}
+.hero-title .hl { background: var(--ai-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-sub { font-family: var(--font-heavy); font-weight: 700; font-size: min(2.8vw, 4.5vh); line-height: 1.15; color: var(--text-secondary); }
+
+/* ── 对比布局 Duo ── */
+.duo { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0 3vw; flex: 1; align-items: stretch; }
+.duo-divider { width: 1px; background: var(--border); align-self: stretch; }
+.duo-col { display: flex; flex-direction: column; gap: var(--sp-4); padding: 0 var(--sp-2); }
+.duo-col .duo-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; display: flex; align-items: center; gap: 0.5vw; }
+.duo-col .duo-tag .badge-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.duo-col .duo-ttl { font-family: var(--font-heavy); font-weight: 700; font-size: 2.2vw; line-height: 1.15; letter-spacing: -0.015em; }
+.duo-col .duo-desc { font-size: 1vw; line-height: 1.5; opacity: 0.7; }
+.duo-col .duo-list { list-style: none; display: flex; flex-direction: column; gap: var(--sp-2); margin-top: auto; padding-top: var(--sp-4); border-top: 1px solid var(--border); }
+.duo-col .duo-list li { font-size: 0.9vw; line-height: 1.5; padding-left: 1.4em; position: relative; opacity: 0.75; }
+.duo-col .duo-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 0.4em; height: 1px; background: currentColor; opacity: 0.5; }
+
+/* ── 旧方案灰色 ── */
+.duo-old .duo-tag { color: var(--text-secondary); }
+.duo-old .badge-num { background: #F3F4F6; color: var(--text-secondary); }
+.duo-old .duo-list li::before { background: var(--error); opacity: 0.5; width: 0.6em; }
+
+/* ── 新方案AI紫 ── */
+.duo-new .duo-tag { color: var(--ai-primary); }
+.duo-new .badge-num { background: rgba(79,70,229,0.1); color: var(--ai-primary); }
+.duo-new .duo-list li::before { background: var(--success); opacity: 0.8; width: 0.6em; }
+
+/* ── 导航点 ── */
+#nav {
+  position: fixed; left: 50%; bottom: 2.5vh; transform: translateX(-50%); z-index: 30;
+  display: flex; gap: 8px; background: transparent; border: 0;
+}
+#nav .dot {
+  width: 6px; height: 6px; background: rgba(0,0,0,0.22); cursor: pointer;
+  transition: all 0.25s ease; border: 0; padding: 0; border-radius: 0;
+}
+#nav .dot:hover { background: rgba(0,0,0,0.5); }
+#nav .dot.active { background: var(--ai-primary); width: 18px; }
+
+#hint {
+  position: fixed; bottom: 2.6vh; right: 2.5vw; z-index: 30;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; opacity: 0.35; color: var(--text-primary);
+}
+
+/* ── 呼吸动画（封面光晕） ── */
+@keyframes breathe {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+}
+.glow-breathe { animation: breathe 4s ease-in-out infinite; }
+
+/* ── 渐进显示（Slide 4 Pipeline） ── */
+.pipeline-step.reveal-step { opacity: 0.25; transition: opacity 0.5s var(--ease-out); }
+.pipeline-step.reveal-step.revealed { opacity: 1; }
+
+/* ── low power mode ── */
+body.low-power * { animation: none !important; transition: none !important; }
+body.low-power [data-anim] { opacity: 1 !important; transform: none !important; }
+
+/* ── 截图容器 ── */
+.screenshot {
+  width: 100%; border-radius: var(--radius-sm); overflow: hidden;
+  box-shadow: var(--shadow); border: 1px solid var(--border);
+}
+.screenshot img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+/* ── 占位框 ── */
+.placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-light); border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius); font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 0.08em; color: var(--text-helper); text-transform: uppercase;
+  aspect-ratio: 16/10;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 900px) {
+  .hero-title { font-size: 10vw; }
+  .h1 { font-size: 6vw; }
+  .h2 { font-size: 4vw; }
+  .h3 { font-size: 3vw; }
+  .grid-2, .grid-2-1 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .pipeline { grid-template-columns: 1fr; }
+  .duo { grid-template-columns: 1fr; }
+  .duo-divider { display: none; }
+}
+</style>
+</head>
+<body class="canvas-mode">
+<script>
+(function(){
+  var KEY='guizang-ppt-low-power';
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stored=localStorage.getItem(KEY);
+  window.__lowPowerMode=stored==='1'||(stored===null&&reduced);
+  function u(){var h=document.getElementById('hint');if(h)h.textContent='← → 翻页 · B '+(window.__lowPowerMode?'动态':'静态')+' · ESC 索引';}
+  window.__setLowPowerMode=function(on,opts){
+    window.__lowPowerMode=!!on;
+    document.body.classList.toggle('low-power',window.__lowPowerMode);
+    if(opts&&opts.persist!==false)localStorage.setItem(KEY,window.__lowPowerMode?'1':'0');
+    u();
+  };
+  document.body.classList.toggle('low-power',window.__lowPowerMode);
+  addEventListener('DOMContentLoaded',u,{once:true});
+})();
+</script>
+
+<div id="hint">← → 翻页 · B 静态 · ESC 索引</div>
+
+<div id="deck">
+
+<!-- ====== P1 · 封面 ====== -->
+<section class="slide" data-animate="hero" data-layout="Cover">
+  <div class="glow-bg glow-breathe" style="top:45%;left:50%;width:60vw;height:60vw;max-width:700px;max-height:700px;"></div>
+  <div class="chrome" style="position:relative;z-index:1">
+    <div class="l">科研项目申报答辩</div>
+    <div class="r">01 / 09</div>
+  </div>
+  <div class="center fill" style="position:relative;z-index:1;gap:var(--sp-6);">
+    <div data-anim="kicker" class="mono-label accent" style="font-size:13px;">AI Native · LLM-Driven Transaction Management</div>
+    <div data-anim="title" style="display:flex;flex-direction:column;align-items:center;gap:var(--sp-2);">
+      <h1 class="hero-title">基于大语言模型的<br><span class="hl">AI Native</span>事务管理系统</h1>
+      <p class="hero-sub">设计与实现</p>
+    </div>
+    <div data-anim="lead" class="lead" style="max-width:48ch;margin-top:var(--sp-4);">自然语言驱动的AI Native事务管理研究与实现</div>
+  </div>
+  <div data-anim="bottom" class="foot" style="position:relative;z-index:1">
+    <div class="mono-label" style="display:flex;gap:2em;font-size:11px;letter-spacing:0.1em;">
+      <span>[学院名称]</span><span>[专业名称]</span><span>[姓名]</span><span>指导教师：[导师姓名]</span>
+    </div>
+    <span style="font-family:var(--font-mono);font-size:12px;">2026</span>
+  </div>
+</section>
+
+<!-- ====== P2 · 问题与AI Native方案 ====== -->
+<section class="slide" data-animate="duo" data-layout="Problem">
+  <div class="chrome">
+    <div class="l">一 · 研究背景与问题分析</div>
+    <div class="r">02 / 09</div>
+  </div>
+  <div class="fill" style="display:flex;flex-direction:column;gap:var(--sp-6);">
+    <div data-anim="head">
+      <div class="kicker">PROBLEM · 从"用户适应软件"到"软件理解用户"</div>
+      <h2 class="h1">一句话讲清 <span style="color:var(--ai-primary);">AI Native</span> 方案</h2>
+    </div>
+    <div data-anim="compare" class="duo">
+      <!-- 左侧：传统方案 -->
+      <div class="duo-col duo-old">
+        <div class="duo-tag"><span class="badge-num">旧</span> TRADITIONAL APP</div>
+        <div class="duo-ttl">用户适应软件</div>
+        <div class="duo-desc">表单填写、多层点击、操作繁琐、学习成本高。每完成一条记账需要6步操作。</div>
+        <ul class="duo-list">
+          <li>点击新增 → 选择支出 → 输入金额</li>
+          <li>选择分类 → 设置时间 → 点击保存</li>
+          <li>6步操作 &nbsp;·&nbsp; 多页面跳转 &nbsp;·&nbsp; 反直觉交互</li>
+        </ul>
+        <div class="placeholder" style="font-size:10px;margin-top:var(--sp-3);aspect-ratio:16/9;">传统记账APP界面截图</div>
+      </div>
+      <div class="duo-divider"></div>
+      <!-- 右侧：AI Native方案 -->
+      <div class="duo-col duo-new">
+        <div class="duo-tag"><span class="badge-num">新</span> AI NATIVE</div>
+        <div class="duo-ttl">软件理解用户</div>
+        <div class="duo-desc">用户只需输入自然语言，系统自动完成识别、提取、解析、存储。一句话完成所有事务操作。</div>
+        <ul class="duo-list">
+          <li>"今天午饭35元，明天下午3点开会"</li>
+          <li>自动拆分为餐饮支出 + 会议日程</li>
+          <li>一句话完成所有事务操作</li>
+        </ul>
+      </div>
+    </div>
+    <div data-anim="foot-note" style="border-top:1px solid var(--border);padding-top:var(--sp-4);display:flex;justify-content:space-between;align-items:center;">
+      <div class="h3" style="color:var(--ai-primary);font-size:1.3vw;">核心理念："让软件理解用户，而不是让用户适应软件"</div>
+      <div class="mono-label" style="opacity:0.5;">BACKGROUND · 02</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== P3 · 系统整体架构 ====== -->
+<section class="slide" data-animate="arch" data-layout="Architecture">
+  <div class="chrome">
+    <div class="l">二 · 系统整体架构</div>
+    <div class="r">03 / 09</div>
+  </div>
+  <div class="fill" style="display:grid;grid-template-columns:1.3fr 0.7fr;gap:var(--sp-8);">
+    <!-- 左侧：分层架构 -->
+    <div data-anim="layers" class="col" style="justify-content:center;gap:var(--sp-2);">
+      <!-- L1 -->
+      <div class="arch-layer card" style="border-left:3px solid #64748B;">
+        <span class="layer-num">01</span>
+        <div><div class="layer-label" style="font-size:1vw;">用户输入层</div><div class="layer-tech">自然语言文本 / 语音输入</div></div>
+      </div>
+      <div style="text-align:center;color:var(--text-helper);font-size:0.9vw;line-height:1.5;">↓</div>
+      <!-- L2 -->
+      <div class="arch-layer card" style="border-left:3px solid #3B82F6;">
+        <span class="layer-num">02</span>
+        <div><div class="layer-label" style="font-size:1vw;">前端交互层</div><div class="layer-tech">React · TypeScript · TailwindCSS</div></div>
+      </div>
+      <div style="text-align:center;color:var(--text-helper);font-size:0.9vw;line-height:1.5;">↓</div>
+      <!-- L3 -->
+      <div class="arch-layer card" style="border-left:3px solid #3B82F6;">
+        <span class="layer-num">03</span>
+        <div><div class="layer-label" style="font-size:1vw;">API 服务层</div><div class="layer-tech">Python · Flask · RESTful</div></div>
+      </div>
+      <div style="text-align:center;color:var(--text-helper);font-size:0.9vw;line-height:1.5;">↓</div>
+      <!-- L4 · LLM 高亮 -->
+      <div class="card-glow" style="display:flex;align-items:center;gap:var(--sp-5);padding:var(--sp-5) var(--sp-5);position:relative;border:1.5px solid rgba(139,92,246,0.35);background:rgba(79,70,229,0.03);">
+        <span style="position:absolute;top:-10px;left:16px;background:var(--ai-primary);color:#fff;font-family:var(--font-mono);font-size:10px;padding:2px 10px;letter-spacing:0.1em;text-transform:uppercase;border-radius:4px;font-weight:600;">★ LLM 调用位置</span>
+        <span class="layer-num" style="color:var(--ai-primary);">04</span>
+        <div>
+          <div style="font-weight:700;font-size:1.1vw;color:var(--ai-primary);">Prompt Workflow + 大语言模型</div>
+          <div style="font-size:0.78vw;color:var(--text-secondary);">DeepSeek / Qwen · Temperature=0 · 多模块Prompt调度</div>
+        </div>
+      </div>
+      <div style="text-align:center;color:var(--text-helper);font-size:0.9vw;line-height:1.5;">↓</div>
+      <!-- L5 -->
+      <div class="arch-layer card" style="border-left:3px solid #10B981;">
+        <span class="layer-num">05</span>
+        <div><div class="layer-label" style="font-size:1vw;">校验与存储层</div><div class="layer-tech">JSON Schema校验 · Markdown清洗 · 默认值补全 · SQLite持久化</div></div>
+      </div>
+    </div>
+    <!-- 右侧：技术栈 + 说明 -->
+    <div data-anim="right" class="col" style="justify-content:center;gap:var(--sp-5);">
+      <div class="col" style="gap:var(--sp-3);">
+        <div class="mono-label">技术栈</div>
+        <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+          <div style="font-weight:700;font-size:0.95vw;color:var(--ai-primary);margin-bottom:4px;">Frontend</div>
+          <div style="font-size:0.8vw;opacity:0.65;">React · TypeScript · TailwindCSS · 响应式</div>
+        </div>
+        <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+          <div style="font-weight:700;font-size:0.95vw;color:var(--ai-primary);margin-bottom:4px;">Backend</div>
+          <div style="font-size:0.8vw;opacity:0.65;">Python · Flask · RESTful API</div>
+        </div>
+        <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+          <div style="font-weight:700;font-size:0.95vw;color:var(--ai-primary);margin-bottom:4px;">AI Layer</div>
+          <div style="font-size:0.8vw;opacity:0.65;">DeepSeek / Qwen · Ollama本地 · Temp=0</div>
+        </div>
+        <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+          <div style="font-weight:700;font-size:0.95vw;color:var(--ai-primary);margin-bottom:4px;">Database</div>
+          <div style="font-size:0.8vw;opacity:0.65;">SQLite · Expenses / Schedules 双表</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:var(--sp-4);">
+        <div style="font-size:0.9vw;color:var(--text-secondary);line-height:1.6;">
+          <span style="color:var(--ai-primary);font-weight:600;">架构特点：</span>单LLM + 模块化Prompt Workflow。每个Prompt模块独立管理、独立优化，降低多Agent复杂度。校验层确保LLM输出可靠落库，形成完整工程闭环。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== P4 · LLM调用与处理流程 ★ 核心页 ====== -->
+<section class="slide" data-animate="pipeline" data-layout="Pipeline">
+  <div class="chrome">
+    <div class="l">三 · 大模型调用与处理流程</div>
+    <div class="r">04 / 09</div>
+  </div>
+  <div class="fill" style="display:flex;flex-direction:column;gap:var(--sp-4);">
+    <div data-anim="head">
+      <div class="kicker">CORE PIPELINE · 从自然语言输入到结构化事务存储的完整AI工程链路</div>
+      <h2 class="h2" style="font-size:2.4vw;">"今天午饭35元，明天下午3点开会"</h2>
+    </div>
+    <!-- 5阶段 Pipeline -->
+    <div data-anim="flow" class="pipeline" id="pipeline-4" style="flex:1;">
+      <!-- ① 多意图拆分 -->
+      <div class="pipeline-step reveal-step">
+        <div class="step-num" style="font-size:11px;">① 多意图拆分</div>
+        <div class="step-title" style="font-size:1vw;font-weight:700;">事务拆分器</div>
+        <div class="step-desc" style="font-size:0.8vw;color:var(--text-helper);">规则优先 + AI兜底</div>
+        <div style="margin-top:var(--sp-2);padding:var(--sp-3);background:var(--bg-light);border-radius:var(--radius-sm);border:1px solid var(--border);font-family:var(--font-mono);font-size:8.5px;color:var(--text-primary);line-height:1.6;">
+"今天午饭35元，明天下午3点开会"
+<br>  ↓
+<br>["午饭35元", "明天下午3点开会"]</div>
+      </div>
+      <!-- ② 意图识别 -->
+      <div class="pipeline-step reveal-step">
+        <div class="step-num" style="font-size:11px;">② 意图识别</div>
+        <div class="step-title" style="font-size:1vw;font-weight:700;">类型分类</div>
+        <div class="step-desc" style="font-size:0.8vw;color:var(--text-helper);">区分消费 / 日程</div>
+        <div style="margin-top:var(--sp-2);padding:var(--sp-3);background:var(--bg-light);border-radius:var(--radius-sm);border:1px solid var(--border);font-family:var(--font-mono);font-size:9px;color:var(--text-primary);line-height:1.7;text-align:center;">
+→ Expense（消费）
+<br>→ Schedule（日程）</div>
+      </div>
+      <!-- ③ Prompt Workflow ★ 高亮 -->
+      <div class="pipeline-step reveal-step" style="position:relative;">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);z-index:2;">
+          <span style="background:var(--ai-primary);color:#fff;font-family:var(--font-mono);font-size:9px;padding:3px 12px;border-radius:4px;font-weight:600;letter-spacing:0.08em;white-space:nowrap;">★ 核心</span>
+        </div>
+        <div class="step-num" style="font-size:11px;color:var(--ai-purple);">③ Prompt Workflow</div>
+        <div class="step-title" style="font-size:1vw;font-weight:700;color:var(--ai-purple);">结构化字段提取</div>
+        <div class="step-desc" style="font-size:0.8vw;color:var(--ai-purple);opacity:0.85;">Few-shot · JSON Mode · Schema约束</div>
+        <div style="margin-top:var(--sp-2);padding:var(--sp-3);background:rgba(139,92,246,0.04);border-radius:var(--radius-sm);border:1px solid rgba(139,92,246,0.25);font-family:var(--font-mono);font-size:8.5px;color:var(--text-primary);line-height:1.6;">
+{ "type": "expense",
+<br>  "amount": 35,
+<br>  "category": "餐饮" }</div>
+      </div>
+      <!-- ④ 混合时间解析 -->
+      <div class="pipeline-step reveal-step">
+        <div class="step-num" style="font-size:11px;">④ 混合时间解析</div>
+        <div class="step-title" style="font-size:1vw;font-weight:700;">语义 + 规则</div>
+        <div class="step-desc" style="font-size:0.8vw;color:var(--text-helper);">LLM语义理解 + 规则引擎计算</div>
+        <div style="margin-top:var(--sp-2);padding:var(--sp-3);background:var(--bg-light);border-radius:var(--radius-sm);border:1px solid var(--border);font-family:var(--font-mono);font-size:9px;color:var(--text-primary);line-height:1.7;text-align:center;">
+"明天下午3点"
+<br>  ↓
+<br>2026-05-26 15:00</div>
+      </div>
+      <!-- ⑤ 校验与存储 -->
+      <div class="pipeline-step reveal-step">
+        <div class="step-num" style="font-size:11px;">⑤ 校验与存储</div>
+        <div class="step-title" style="font-size:1vw;font-weight:700;">稳定性保障</div>
+        <div class="step-desc" style="font-size:0.8vw;color:var(--text-helper);">清洗 · 校验 · 修复 · 落库</div>
+        <div style="margin-top:var(--sp-2);padding:var(--sp-3);background:var(--bg-light);border-radius:var(--radius-sm);border:1px solid var(--border);font-family:var(--font-mono);font-size:8.5px;color:var(--text-primary);line-height:1.7;">
+  ① Markdown 清洗
+<br>  ② Schema 校验
+<br>  ③ 自动修复
+<br>  ④ 持久化存储</div>
+      </div>
+    </div>
+    <!-- 底部关键句 -->
+    <div data-anim="foot-note" style="border-top:1px solid var(--border);padding-top:var(--sp-3);display:flex;justify-content:space-between;align-items:center;">
+      <div class="h3" style="font-size:1.3vw;color:var(--ai-primary);">★ 本项目重点研究：如何让 LLM 稳定完成事务操作</div>
+      <div class="mono-label" style="opacity:0.5;">LLM PIPELINE · 04</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== P5 · 运行示例与效果 ====== -->
+<section class="slide" data-animate="demo" data-layout="Demo">
+  <div class="chrome">
+    <div class="l">四 · 系统运行示例</div>
+    <div class="r">05 / 09</div>
+  </div>
+  <div class="fill" style="display:flex;flex-direction:column;gap:var(--sp-5);">
+    <div data-anim="head">
+      <div class="kicker">LIVE DEMO · 自然语言 → 结构化事务 → 系统执行</div>
+      <h2 class="h2">端到端示例：一句话完成多事务处理</h2>
+    </div>
+    <!-- 上部：流程卡片行 -->
+    <div data-anim="flow" class="demo-flow">
+      <!-- 卡1：输入 -->
+      <div class="demo-flow-card">
+        <div class="demo-col-header">1. 用户自然语言输入</div>
+        <div style="font-family:var(--font-heavy);font-size:1.05vw;font-weight:700;color:var(--text-primary);line-height:1.4;">
+          "今天午饭35元，明天下午3点开会"
+        </div>
+        <div class="body-sm" style="font-size:0.72vw;">单条输入，混合意图：支出记账 + 日程创建</div>
+      </div>
+      <!-- 箭头 -->
+      <div class="demo-flow-arrow">→</div>
+      <!-- 卡2：LLM JSON -->
+      <div class="demo-flow-card">
+        <div class="demo-col-header">2. LLM 结构化输出</div>
+        <div class="code-block" style="font-size:9px;padding:var(--sp-2) var(--sp-3);line-height:1.5;">
+[
+  { <span class="key">"type"</span>: <span class="str">"expense"</span>, <span class="key">"amount"</span>: <span class="num">35</span>, <span class="key">"category"</span>: <span class="str">"餐饮"</span> },
+  { <span class="key">"type"</span>: <span class="str">"schedule"</span>, <span class="key">"title"</span>: <span class="str">"开会"</span>, <span class="key">"time"</span>: <span class="str">"2026-05-26 15:00"</span> }
+]</div>
+        <div class="body-sm" style="font-size:0.68vw;">Temperature=0 · Schema校验 · 默认值补全</div>
+      </div>
+      <!-- 箭头 -->
+      <div class="demo-flow-arrow">→</div>
+      <!-- 卡3：执行结果 -->
+      <div class="demo-flow-card" style="border-left:3px solid var(--success);">
+        <div class="demo-col-header" style="color:var(--success);">3. 系统执行结果</div>
+        <div style="display:flex;flex-direction:column;gap:var(--sp-1);flex:1;justify-content:center;">
+          <div style="font-family:var(--font-mono);font-size:0.78vw;color:#065F46;line-height:1.6;">
+            ✓ expenses: 餐饮 ¥35.00<br>✓ schedules: 会议 2026-05-26 15:00
+          </div>
+        </div>
+        <div class="body-sm" style="font-size:0.68vw;color:var(--text-secondary);">单次输入 → 双表同步写入</div>
+      </div>
+    </div>
+    <!-- 下部：宽大截图区 -->
+    <div data-anim="shots" class="demo-screenshots">
+      <div class="demo-screenshot-card">
+        <div class="shot-label">AI 对话解析结果</div>
+        <div class="shot-img">
+          <img src="images/04-demo-chat.png" alt="AI对话解析结果" loading="lazy">
+        </div>
+      </div>
+      <div class="demo-screenshot-card">
+        <div class="shot-label">AI Core 系统首页</div>
+        <div class="shot-img">
+          <img src="images/04-demo-home.png" alt="AI Core系统首页" loading="lazy">
+        </div>
+      </div>
+    </div>
+    <!-- 底部说明 -->
+    <div data-anim="foot-note" style="border-top:1px solid var(--border);padding-top:var(--sp-3);">
+      <div class="body-sm">端到端闭环：自然语言输入 → LLM结构化解析 → 双表持久化 &nbsp;|&nbsp; 一套 Prompt Workflow 同时处理记账 + 日程</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== P6 · 项目创新点 ====== -->
+<section class="slide" data-animate="innovations" data-layout="Innovations">
+  <div class="chrome">
+    <div class="l">五 · 项目创新点</div>
+    <div class="r">06 / 09</div>
+  </div>
+  <div class="fill" style="display:flex;flex-direction:column;gap:var(--sp-7);">
+    <div data-anim="head">
+      <div class="kicker">INNOVATIONS · 三项核心创新</div>
+      <h2 class="h1">不是大模型强，是工程架构强</h2>
+      <div class="divider-accent" style="margin-top:var(--sp-3);"></div>
+    </div>
+    <div data-anim="cards" class="grid-3" style="flex:1;align-content:start;">
+      <!-- 创新1 -->
+      <div class="card card-accent" style="display:flex;flex-direction:column;gap:var(--sp-4);padding:var(--sp-6) var(--sp-6);">
+        <div class="mono-label accent">01 · 交互范式</div>
+        <div class="h3" style="font-size:1.5vw;">AI Native<br>自然语言交互</div>
+        <div class="body-sm">颠覆传统表单操作模式。用户无需学习软件，一句话即可完成记账+日程+提醒。降低使用门槛至零。</div>
+      </div>
+      <!-- 创新2 -->
+      <div class="card card-accent" style="display:flex;flex-direction:column;gap:var(--sp-4);padding:var(--sp-6) var(--sp-6);">
+        <div class="mono-label accent">02 · 工程架构</div>
+        <div class="h3" style="font-size:1.5vw;">模块化 Prompt<br>Workflow 机制</div>
+        <div class="body-sm">单LLM + 多Prompt模块职责分离（拆分→识别→提取→解析→校验）。每个模块独立优化、易调试、可扩展，避免多Agent复杂编排。</div>
+      </div>
+      <!-- 创新3 -->
+      <div class="card card-accent" style="display:flex;flex-direction:column;gap:var(--sp-4);padding:var(--sp-6) var(--sp-6);">
+        <div class="mono-label accent">03 · 时间解析</div>
+        <div class="h3" style="font-size:1.5vw;">LLM语义 + 规则<br>混合式时间解析</div>
+        <div class="body-sm">LLM理解"明天下午""下周三"等模糊自然语言时间表达，规则引擎负责标准计算与格式转换。兼顾灵活性与精确性。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====== P7 · 已有成果展示 ★ ====== -->
+<section class="slide" data-animate="achievements" data-layout="Achievements">
+  <div class="chrome">
+    <div class="l">六 · 已有成果展示</div>
+    <div class="r">07 / 09</div>
+  </div>
+  <div class="fill" style="display:flex;flex-direction:column;gap:var(--sp-6);">
+    <div data-anim="head">
+      <div class="kicker">ACHIEVEMENTS · 用事实说话</div>
+      <h2 class="h1" style="font-size:3vw;">小组已取得成果</h2>
+    </div>
+    <div data-anim="content" class="grid-2" style="flex:1;align-content:start;">
+      <!-- 软著 1 -->
+      <div class="card" style="display:flex;flex-direction:column;gap:var(--sp-4);padding:var(--sp-5) var(--sp-5);">
+        <div style="display:flex;align-items:center;gap:var(--sp-3);">
+          <div class="dl-icon green" style="width:44px;height:44px;font-size:1.4vw;">©</div>
+          <div>
+            <div class="h3" style="font-size:1.2vw;">计算机软件著作权</div>
+            <div class="body-sm">AI Native事务管理系统 V1.0</div>
+          </div>
+          <span class="tag green" style="margin-left:auto;">已获得</span>
+        </div>
+        <div class="placeholder" style="aspect-ratio:4/3;font-size:11px;">
+          软著证书扫描件<br>拖放或替换此区域
+        </div>
+        <div class="body-sm" style="text-align:center;font-family:var(--font-mono);font-size:0.68vw;color:var(--text-helper);">
+          登记号：[待填写] &nbsp;·&nbsp; 证书号：[待填写] &nbsp;·&nbsp; 获得日期：[待填写]
+        </div>
+      </div>
+      <!-- 软著 2 -->
+      <div class="card" style="display:flex;flex-direction:column;gap:var(--sp-4);padding:var(--sp-5) var(--sp-5);">
+        <div style="display:flex;align-items:center;gap:var(--sp-3);">
+          <div class="dl-icon green" style="width:44px;height:44px;font-size:1.4vw;">©</div>
+          <div>
+            <div class="h3" style="font-size:1.2vw;">计算机软件著作权</div>
+            <div class="body-sm">[名称待填写]</div>
+          </div>
+          <span class="tag green" style="margin-left:auto;">已获得</span>
+        </div>
+        <div class="placeholder" style="aspect-ratio:4/3;font-size:11px;">
+          软著证书扫描件<br>拖放或替换此区域
+        </div>
+        <div class="body-sm" style="text-align:center;font-family:var(--font-mono);font-size:0.68vw;color:var(--text-helper);">
+          登记号：[待填写] &nbsp;·&nbsp; 证书号：[待填写] &nbsp;·&nbsp; 获得日期：[待填写]
+        </div>
+      </div>
+    </div>
+    <div data-anim="foot-note" style="border-top:1px solid var(--border);padding-top:var(--sp-4);text-align:center;">
+      <div class="lead" style="color:var(--ai-primary);">以上成果为本小组在导师指导下独立完成，为项目结题提供坚实支撑</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== P8 · 结题规划与时间轴 ★ ====== -->
+<section class="slide" data-animate="deliverables" data-layout="Deliverables">
+  <div class="chrome">
+    <div class="l">七 · 结题规划与推进</div>
+    <div class="r">08 / 09</div>
+  </div>
+  <div class="fill" style="display:flex;flex-direction:column;gap:var(--sp-6);">
+    <div data-anim="head">
+      <div class="kicker">ROADMAP & DELIVERABLES · 确保项目顺利结题</div>
+      <h2 class="h1" style="font-size:3.2vw;">从原型到结题的完整路径</h2>
+    </div>
+    <!-- 已完成条 -->
+    <div data-anim="badge" style="display:flex;align-items:center;gap:var(--sp-5);background:var(--success-bg);padding:var(--sp-4) var(--sp-5);border-radius:var(--radius-sm);border-left:3px solid var(--success);">
+      <span class="mono-label" style="color:#065F46;white-space:nowrap;">目前已完成</span>
+      <div style="display:flex;gap:var(--sp-6);flex-wrap:wrap;">
+        <span class="body-sm" style="color:#065F46;">✓ Prompt原型设计</span>
+        <span class="body-sm" style="color:#065F46;">✓ Web基础交互</span>
+        <span class="body-sm" style="color:#065F46;">✓ JSON结构化解析</span>
+        <span class="body-sm" style="color:#065F46;">✓ SQLite数据存储</span>
+      </div>
+    </div>
+    <!-- 主内容 -->
+    <div data-anim="content" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);flex:1;align-content:start;">
+      <!-- 左：成果展示 -->
+      <div class="col" style="gap:var(--sp-4);">
+        <div class="mono-label accent">预期结题成果</div>
+        <div class="deliverable-card">
+          <div class="dl-icon green">◉</div>
+          <div>
+            <div class="h3" style="font-size:1.1vw;">可运行 Web Demo 系统</div>
+            <div class="body-sm">完整前后端 + LLM集成 + SQLite存储</div>
+          </div>
+          <span class="tag green" style="margin-left:auto;">已完成</span>
+        </div>
+        <div class="deliverable-card">
+          <div class="dl-icon purple">▶</div>
+          <div>
+            <div class="h3" style="font-size:1.1vw;">项目演示视频（5分钟）</div>
+            <div class="body-sm">系统功能演示 + 技术架构讲解</div>
+          </div>
+          <span class="tag accent" style="margin-left:auto;">待制作</span>
+        </div>
+        <div class="deliverable-card">
+          <div class="dl-icon blue">⌂</div>
+          <div>
+            <div class="h3" style="font-size:1.1vw;">GitHub 开源仓库</div>
+            <div class="body-sm">完整源码 + 技术文档 + 测试报告</div>
+          </div>
+          <span class="tag accent" style="margin-left:auto;">持续更新</span>
+        </div>
+      </div>
+      <!-- 右：时间轴 -->
+      <div class="col" style="gap:var(--sp-4);">
+        <div class="mono-label accent">推进时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item" style="position:relative;">
+            <div class="timeline-dot done"></div>
+            <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+              <div style="display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-2);">
+                <span class="tag green">Phase 1</span>
+                <span class="h3" style="font-size:1vw;">Web原型开发验证</span>
+              </div>
+              <div class="body-sm">Prompt Workflow · JSON解析引擎 · SQLite存储 · Web Demo上线</div>
+            </div>
+          </div>
+          <div class="timeline-item" style="position:relative;">
+            <div class="timeline-dot active"></div>
+            <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+              <div style="display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-2);">
+                <span class="tag yellow">Phase 2</span>
+                <span class="h3" style="font-size:1vw;">移动端适配与Prompt优化</span>
+              </div>
+              <div class="body-sm">响应式移动端UI · 语音输入集成 · Prompt迭代 · 准确率提升至95%+</div>
+            </div>
+          </div>
+          <div class="timeline-item" style="position:relative;">
+            <div class="timeline-dot planned"></div>
+            <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+              <div style="display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-2);">
+                <span class="tag gray">Phase 3</span>
+                <span class="h3" style="font-size:1vw;">测试、优化与成果产出</span>
+              </div>
+              <div class="body-sm">准确率测试报告 · 用户体验测试 · 软著申请 · 论文撰写 · 演示视频制作</div>
+            </div>
+          </div>
+          <div class="timeline-item" style="position:relative;">
+            <div class="timeline-dot planned"></div>
+            <div class="card" style="padding:var(--sp-4) var(--sp-5);">
+              <div style="display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-2);">
+                <span class="tag gray">Phase 4</span>
+                <span class="h3" style="font-size:1vw;">结题交付</span>
+              </div>
+              <div class="body-sm">完整结题报告 · 软著下证 · 论文发表 · 项目归档</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== P9 · 结尾页 ====== -->
+<section class="slide" data-animate="closing" data-layout="Closing" style="background:linear-gradient(135deg, rgba(139,92,246,0.06) 0%, rgba(99,102,241,0.12) 50%, rgba(79,70,229,0.05) 100%);">
+  <div class="glow-bg glow-breathe" style="top:40%;left:50%;width:55vw;height:55vw;max-width:650px;max-height:650px;background:radial-gradient(circle, rgba(108,99,255,0.14) 0%, rgba(139,92,246,0.04) 45%, transparent 70%);"></div>
+  <div class="chrome" style="position:relative;z-index:1">
+    <div class="l">09 / 09</div>
+    <div class="r">CLOSING</div>
+  </div>
+  <div class="center fill" style="position:relative;z-index:1;gap:var(--sp-7);">
+    <!-- 核心成果摘要 -->
+    <div data-anim="summary" style="display:flex;gap:var(--sp-10);align-items:center;">
+      <div class="col" style="gap:var(--sp-3);align-items:flex-end;text-align:right;">
+        <div class="mono-label accent" style="font-size:11px;">已完成</div>
+        <div class="body-sm" style="line-height:1.8;">
+          Web原型系统<br>
+          Prompt Workflow<br>
+          JSON解析引擎<br>
+          SQLite数据存储
+        </div>
+      </div>
+      <div style="width:1px;height:120px;background:var(--border);"></div>
+      <div class="col" style="gap:var(--sp-3);align-items:flex-start;text-align:left;">
+        <div class="mono-label accent" style="font-size:11px;">预期成果</div>
+        <div class="body-sm" style="line-height:1.8;">
+          软件著作权 1 项<br>
+          EI 技术论文 1 篇<br>
+          移动端 Demo<br>
+          项目演示视频
+        </div>
+      </div>
+    </div>
+    <!-- 核心理念 -->
+    <div data-anim="title" style="display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);">
+      <h2 style="font-family:var(--font-heavy);font-size:min(5vw,9vh);line-height:1.08;letter-spacing:-0.025em;font-weight:900;">
+        <span style="background:var(--ai-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">AI Native</span>
+      </h2>
+      <h2 style="font-family:var(--font-heavy);font-size:min(3.5vw,5.5vh);line-height:1.08;letter-spacing:-0.025em;font-weight:700;color:var(--text-primary);">
+        让软件理解用户
+      </h2>
+    </div>
+    <div class="divider-accent"></div>
+    <!-- Q&A -->
+    <div data-anim="qa" style="display:flex;flex-direction:column;align-items:center;gap:var(--sp-2);">
+      <p style="font-family:var(--font-heavy);font-size:1.6vw;font-weight:700;color:var(--text-primary);">感谢各位老师聆听</p>
+      <p class="lead">请各位专家评委批评指正 &nbsp;|&nbsp; Q & A</p>
+    </div>
+  </div>
+  <div class="foot" style="position:relative;z-index:1">
+    <div class="mono-label" style="font-size:11px;letter-spacing:0.1em;">AI Native 事务管理系统 · 科研项目答辩</div>
+    <span style="font-family:var(--font-mono);font-size:12px;">2026.05</span>
+  </div>
+</section>
+
+</div><!-- #deck -->
+
+<nav id="nav"></nav>
+
+<script>
+(function(){
+  const D = document;
+  const deck = D.getElementById('deck');
+  const nav = D.getElementById('nav');
+  const slides = [...deck.querySelectorAll('.slide')];
+  const N = slides.length;
+  let idx = 0;
+  let busy = false;
+  let pipelineRevealIdx = 0;
+
+  // Build nav dots
+  slides.forEach((_,i)=>{
+    const dot = D.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Slide '+(i+1));
+    dot.onclick = ()=> goto(i);
+    nav.appendChild(dot);
+  });
+  const dots = [...nav.querySelectorAll('.dot')];
+
+  function resetPipeline(){
+    pipelineRevealIdx = 0;
+    const steps = D.querySelectorAll('#pipeline-4 .reveal-step');
+    steps.forEach(el=>el.classList.remove('revealed'));
+  }
+
+  function advancePipeline(){
+    const steps = D.querySelectorAll('#pipeline-4 .reveal-step');
+    if(pipelineRevealIdx < steps.length){
+      steps[pipelineRevealIdx].classList.add('revealed');
+      pipelineRevealIdx++;
+    }
+  }
+
+  function goto(i){
+    if(i<0||i>=N||busy) return;
+    busy = true;
+    idx = i;
+    window.__currentSlideIndex = idx;
+    deck.style.transform = 'translateX(' + (-idx*100) + 'vw)';
+    dots.forEach((d,j)=> d.classList.toggle('active', j===idx));
+    resetPipeline();
+    setTimeout(()=>{ busy = false; playSlide(idx); }, 750);
+  }
+
+  function playSlide(i){
+    const s = slides[i];
+    if(!s) return;
+    if(window.__lowPowerMode){
+      s.querySelectorAll('[data-anim]').forEach(el=>{ el.style.opacity='1'; el.style.transform='none'; });
+      return;
+    }
+    const items = s.querySelectorAll('[data-anim]');
+    items.forEach((el, j)=>{
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(18px)';
+      el.animate([
+        { opacity: 0, transform: 'translateY(18px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ], {
+        duration: 450,
+        delay: 60 * j,
+        easing: 'cubic-bezier(0,0,0.2,1)',
+        fill: 'forwards'
+      });
+    });
+    // 如果是P4，自动开始 pipeline 逐步展示
+    if(s.getAttribute('data-layout')==='Pipeline'){
+      setTimeout(()=>{
+        const steps = D.querySelectorAll('#pipeline-4 .reveal-step');
+        steps.forEach((step, j)=>{
+          setTimeout(()=>{ advancePipeline(); }, 500 + j*600);
+        });
+      }, items.length * 60 + 300);
+    }
+  }
+
+  // Keyboard
+  D.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'){
+      e.preventDefault();
+      // 如果当前是P4且pipeline未完全展示，则展示下一步
+      const s = slides[idx];
+      if(s && s.getAttribute('data-layout')==='Pipeline' && pipelineRevealIdx < 5){
+        advancePipeline();
+      } else {
+        goto(idx+1);
+      }
+    }
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){ e.preventDefault(); goto(idx-1); }
+    if(e.key===' '){ e.preventDefault(); goto(idx+1); }
+    if(e.key==='Home'){ e.preventDefault(); goto(0); }
+    if(e.key==='End'){ e.preventDefault(); goto(N-1); }
+    if(e.key==='b'||e.key==='B'){ e.preventDefault(); window.__setLowPowerMode(!window.__lowPowerMode, {persist:true}); }
+    if(e.key==='Escape'){ e.preventDefault(); toggleOverview(); }
+    if(e.key==='f'||e.key==='F'){ e.preventDefault(); if(D.fullscreenElement){D.exitFullscreen()}else{D.body.requestFullscreen()} }
+    // 空格键在P4中逐步展示pipeline
+    if(e.key===' '){
+      const s = slides[idx];
+      if(s && s.getAttribute('data-layout')==='Pipeline' && pipelineRevealIdx < 5){
+        advancePipeline();
+      }
+    }
+  });
+
+  // Touch
+  let tx = 0;
+  deck.addEventListener('touchstart', e=>{ tx = e.touches[0].clientX; }, {passive:true});
+  deck.addEventListener('touchend', e=>{
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx)>60){ dx<0 ? goto(idx+1) : goto(idx-1); }
+  });
+
+  // Wheel
+  let wheelTimer;
+  deck.addEventListener('wheel', e=>{
+    if(wheelTimer) return;
+    wheelTimer = setTimeout(()=>{ wheelTimer = null; }, 800);
+    e.deltaY>0 ? goto(idx+1) : goto(idx-1);
+  }, {passive:true});
+
+  // Overview (ESC)
+  let ov = null;
+  function toggleOverview(){
+    if(ov){ ov.remove(); ov=null; D.body.style.overflow='hidden'; return; }
+    ov = D.createElement('div');
+    ov.id='overview';
+    ov.style.cssText='position:fixed;inset:0;z-index:100;background:rgba(10,10,10,.94);display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2vh;padding:4vh 3vw;overflow-y:auto;align-content:start';
+    slides.forEach((s,i)=>{
+      const clone = s.cloneNode(true);
+      clone.style.cssText='width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;border:2px solid '+(i===idx?'var(--ai-primary)':'rgba(255,255,255,.18)')+';cursor:pointer;transform:scale(1);transition:border-color .2s;background:'+';background:var(--bg-light);color:var(--text-primary)';
+      clone.querySelectorAll('[data-anim]').forEach(el=>{ el.style.opacity='1';el.style.transform='none' });
+      clone.querySelectorAll('.reveal-step').forEach(el=>{ el.style.opacity='1'; });
+      clone.onclick = ()=>{ toggleOverview(); goto(i); };
+      ov.appendChild(clone);
+    });
+    D.body.appendChild(ov);
+    D.body.style.overflow='hidden';
+  }
+
+  // Init
+  dots[0]?.classList.add('active');
+  setTimeout(()=>{ D.body.classList.add('motion-ready'); playSlide(0); }, 200);
+
+  window.__playSlide = playSlide;
+})();
+</script>
+</body>
+</html>

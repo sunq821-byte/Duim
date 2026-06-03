@@ -1,0 +1,19 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "打开菜单" [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+    - generic [ref=e7]: AI OS
+    - img [ref=e9]
+  - generic [ref=e12]:
+    - generic [ref=e15]:
+      - button "告诉我你想记录什么" [ref=e16] [cursor=pointer]:
+        - img [ref=e19]
+      - generic [ref=e22]:
+        - paragraph [ref=e23]: 告诉我你想记录什么
+        - paragraph [ref=e24]: 点击麦克风或下方输入
+    - generic [ref=e26]:
+      - button "语音输入" [ref=e27] [cursor=pointer]:
+        - img [ref=e28]
+      - textbox "输入你想记录的事务..." [ref=e31]
+      - button "发送" [disabled] [ref=e32]:
+        - img [ref=e33]

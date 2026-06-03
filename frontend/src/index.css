@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg-primary text-primary font-sans;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-[#D4D8E0] rounded-sm; }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-border rounded-2xl p-4;
+    box-shadow: 0 1px 3px rgba(30, 32, 34, 0.04), 0 4px 12px rgba(30, 32, 34, 0.04);
+  }
+
+  .chip {
+    @apply px-4 py-2 rounded-full text-xs text-muted bg-bg-secondary border border-border hover:border-accent/40 hover:text-accent transition-colors cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "AA制火锅",
+    "input": "中午和同事AA吃火锅，每个人花了45",
+    "expected": {
+      "expenses": [
+        {"type": "expense", "category": "餐饮", "amount": 45, "note": "AA火锅"}
+      ]
+    },
+    "check": "amount是个人实付金额(45)，不是总价"
+  },
+  {
+    "name": "完全模糊金额",
+    "input": "今天吃饭花了几十块",
+    "expected": {
+      "expenses": [
+        {"type": "expense", "category": "餐饮", "amount": 0, "note": "吃饭"}
+      ]
+    },
+    "check": "完全模糊金额('几十块')amount=0，不编造数值"
+  },
+  {
+    "name": "近似金额可估算",
+    "input": "买小吃花了二十多",
+    "expected": {
+      "expenses": [
+        {"type": "expense", "category": "餐饮", "amount": 25, "note": "买小吃"}
+      ]
+    },
+    "check": "'二十多'有明确下限→合理估值25"
+  },
+  {
+    "name": "退款误判",
+    "input": "退了我50块钱",
+    "expected": {
+      "expenses": []
+    },
+    "check": "退款应归为income，不属于expense输出范围"
+  },
+  {
+    "name": "混合金额单位",
+    "input": "打车花了20块5毛",
+    "expected": {
+      "expenses": [
+        {"type": "expense", "category": "交通", "amount": 20.5, "note": "打车"}
+      ]
+    },
+    "check": "口语金额→数字转换正确"
+  },
+  {
+    "name": "奶茶识别",
+    "input": "下午买了杯奶茶16",
+    "expected": {
+      "expenses": [
+        {"type": "expense", "category": "餐饮", "amount": 16, "note": "奶茶"}
+      ]
+    },
+    "check": "奶茶→餐饮(不是饮品单独类)"
+  },
+  {
+    "name": "多笔无标点",
+    "input": "午饭25奶茶16打车30",
+    "expected": {
+      "expenses": [
+        {"type": "expense", "category": "餐饮", "amount": 25, "note": "午饭"},
+        {"type": "expense", "category": "餐饮", "amount": 16, "note": "奶茶"},
+        {"type": "expense", "category": "交通", "amount": 30, "note": "打车"}
+      ]
+    },
+    "check": "无标点多笔拆分"
+  }
+]

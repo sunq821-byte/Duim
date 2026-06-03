@@ -1,0 +1,42 @@
+[
+  {
+    "name": "模糊时间",
+    "input": "过两天提醒我交电费",
+    "expected": {
+      "schedules": [
+        {"type": "schedule", "title": "交电费", "category": "其他", "repeat_type": "none", "note": "交电费"}
+      ]
+    },
+    "check": "过两天→后天日期，默认09:00"
+  },
+  {
+    "name": "去某地办事",
+    "input": "明天去银行办事",
+    "expected": {
+      "schedules": [
+        {"type": "schedule", "title": "去银行办事", "category": "出行", "repeat_type": "none"}
+      ]
+    },
+    "check": "去某地→出行分类，无金额→非expense"
+  },
+  {
+    "name": "每周重复",
+    "input": "每周一早上9点站会",
+    "expected": {
+      "schedules": [
+        {"type": "schedule", "title": "站会", "category": "会议", "repeat_type": "weekly"}
+      ]
+    },
+    "check": "每周→weekly重复类型"
+  },
+  {
+    "name": "体检提醒",
+    "input": "后天上午去体检，提前1小时提醒",
+    "expected": {
+      "schedules": [
+        {"type": "schedule", "title": "体检", "category": "医疗", "remind_time": "较time提前1小时"}
+      ]
+    },
+    "check": "体检→医疗，提前1小时→remind_time提前60分钟"
+  }
+]
