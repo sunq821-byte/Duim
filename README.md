@@ -38,7 +38,7 @@
 | 后端 | Flask (Python) |
 | AI | DeepSeek API / Ollama（可切换） |
 | 存储 | SQLite |
-| 设计 | AI-Native UI（暗色模式 + AI Purple + 语音优先） |
+| 设计 | AI-Native UI（浅色模式优先 + AI Purple + 语音优先） |
 | 字体 | DM Sans + Noto Sans SC + JetBrains Mono |
 
 ## 架构图
@@ -147,13 +147,19 @@ AI_Native/
 │   │   │   ├── ExpenseCard.tsx # 收支记录卡片
 │   │   │   ├── ScheduleCard.tsx# 日程记录卡片
 │   │   │   ├── StatsChart.tsx  # 统计图表
-│   │   │   └── Toast.tsx       # Toast 通知
+│   │   │   ├── Toast.tsx       # Toast 通知
+│   │   │   ├── MessageBubble.tsx   # 消息气泡
+│   │   │   ├── SettingsSheet.tsx   # 设置面板
+│   │   │   ├── TimelinePanel.tsx   # 时间线面板
+│   │   │   └── TransactionList.tsx # 事务列表
 │   │   ├── hooks/useChat.ts    # 聊天状态管理
 │   │   ├── pages/              # 页面组件
 │   │   │   ├── HomePage.tsx    # 首页（AI核心球 + 聊天）
 │   │   │   ├── RecordsPage.tsx # 最近事务
 │   │   │   └── StatsPage.tsx   # AI 洞察
-│   │   └── types/index.ts      # TypeScript 类型定义
+│   │   ├── types/index.ts      # TypeScript 类型定义
+│   │   ├── index.css           # TailwindCSS + 设计 Token
+│   │   └── main.tsx            # React 入口
 │   ├── vite.config.ts          # Vite 配置 + /api 代理
 │   └── package.json
 ├── backend/                    # Flask 后端
@@ -178,7 +184,7 @@ AI_Native/
 │   │   ├── delete_parsing.py    # 删除解析（Canonical Intent Object）
 │   │   ├── splitter_prompt.py   # 文本拆分（JSON Mode）
 │   │   └── fewshots/            # 边界案例库（JSON 文件）
-│   ├── validators/              # 校验与归一化（新增）
+│   ├── validators/              # 校验与归一化
 │   │   ├── schemas.py           # Pydantic Schema 定义
 │   │   └── normalizers.py       # 分类归一化映射表（~120 条）
 │   ├── repositories/           # 数据持久化层
@@ -186,25 +192,26 @@ AI_Native/
 │   ├── database/               # 数据库连接
 │   │   └── connection.py       # SQLite 连接管理
 │   ├── models/                 # 数据模型
+│   │   └── entry.py            # Entry 数据类
 │   ├── utils/                  # 工具函数
 │   │   ├── json_utils.py       # JSON 提取与校验
 │   │   └── time_utils.py       # 时间解析
-│   ├── tests/                  # 测试（136 个）
-│   │   ├── test_time_utils.py   # 时间解析（25）
-│   │   ├── test_json_utils.py   # JSON 解析（15）
-│   │   ├── test_entry_repository.py # SQLite CRUD（18）
-│   │   ├── test_multi_transaction.py # 集成测试（7）
-│   │   ├── test_splitter_service.py # Splitter 服务（13）
-│   │   └── test_prompts.py      # Prompt Schema + Normalize（47）
-├── data/                       # SQLite 数据库文件
-├── docs/                       # 文档
+│   └── tests/                  # 测试（136 个）
+│       ├── test_time_utils.py   # 时间解析（25）
+│       ├── test_json_utils.py   # JSON 解析（15）
+│       ├── test_entry_repository.py # SQLite CRUD（18）
+│       ├── test_multi_transaction.py # 集成测试（7）
+│       ├── test_splitter_service.py # Splitter 服务（13）
+│       └── test_prompts.py      # Prompt Schema + Normalize（47）
 ├── scripts/                    # 辅助脚本
-├── .env                        # 环境变量（不提交）
+│   └── fill_docx.py            # 文档自动填充
 ├── .env.example                # 环境变量模板
 ├── requirements.txt            # Python 依赖
 ├── package.json                # 根级统一脚本
 └── README.md
 ```
+
+> **注意：** `data/`（数据库文件）、`docs/`（文档）、`ppt/`（演示文稿）以及 `.claude/`、`.vscode/` 等工具配置目录已加入 `.gitignore`，不会提交到仓库。
 
 ## Prompt Workflow (方案 A++)
 
@@ -232,7 +239,7 @@ AI_Native/
 
 ## UI 设计系统
 
-### 色彩（暗色模式）
+### 色彩（浅色模式优先）
 
 | Token | 值 | 用途 |
 |-------|-----|------|
@@ -297,7 +304,7 @@ python -m pytest backend/tests/ -v
 
 ### 手动回归测试
 
-`docs/测试用例-自然语言.md` 包含约 60 条自然语言测试用例，覆盖 9 类意图。⭐ 标注约 20 条回归必测用例。
+`docs/测试用例-自然语言.md`（本地文档，未提交到仓库）包含约 60 条自然语言测试用例，覆盖 9 类意图。⭐ 标注约 20 条回归必测用例。
 
 最近修复（2026-05-23）：
 - **日期上下文传递**：相对日期（前天/昨天/明天）在拆分后正确传播到后续分句
