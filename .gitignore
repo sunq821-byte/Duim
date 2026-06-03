@@ -8,5 +8,8 @@ dist/
 .venv/
 .playwright-mcp/
 .pytest_cache/
+.claude/
+.vscode/
+.superpowers/
 data/
 *.db
